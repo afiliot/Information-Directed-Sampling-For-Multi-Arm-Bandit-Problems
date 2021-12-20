@@ -114,9 +114,10 @@ class BetaBernoulliMAB(GenericMAB):
                 else:
                     maap[a, a] = (prod_F1[a, a]*X).sum()/p_star[a]
         rho_star = np.inner(np.diag(maap), p_star)
-        delta = rho_star - b1/(b1+b2)
+        p_y = b1/(b1+b2)
+        delta = rho_star - p_y
         for arm in range(self.nb_arms):
-            sum_log = maap[arm]*np.log(maap[arm]*(b1+b2)/b1) + (1-maap[arm])*np.log((1-maap[arm])*(b1+b2)/b2)
+            sum_log = maap[arm]*np.log(maap[arm]/p_y[arm]) + (1-maap[arm])*np.log((1-maap[arm])/(1-p_y[arm]))
             g[arm] = np.inner(p_star, sum_log)
         return delta, g, p_star, maap
 
